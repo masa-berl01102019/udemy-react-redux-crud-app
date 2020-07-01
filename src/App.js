@@ -73,53 +73,88 @@
   // } 
 
 /* props */
-// propsはcomponentの属性のことでpropsには文字,数字,配列,オブジェクト,関数など何でも使用できる
-import React from 'react';
+  // propsはcomponentの属性のことでpropsには文字,数字,配列,オブジェクト,関数など何でも使用できる
+  // import React from 'react';
+  // 
+  // const App = () => {
+  // 
+  //   // return (
+  //   //   <div>
+  //   //     <User name={"Taro"} age={10} />
+  //   //     <User name={"Hanako"} age={5} />
+  //   //     {/* 上記のようにcomponentは再利用可能でかつ属性(name,age)の値に個別の値を渡して表示することも出来る */}
+  //   //   </div>
+  //   // )
+  //   // 上記は下記のようにユーザーの情報を配列で一括で管理して書き換えられる
+  // 
+  //   const profiles = [ // 配列で属性と値を管理
+  //     { name: 'Taro', age: 10 },
+  //     { name: 'Hanako', age: 5 },
+  //     { }, // 下記で定めたdefaultPropsが参照される
+  //   ]
+  // 
+  //   return (
+  //     <div>
+  //       {
+  //         profiles.map((profile, index) => {
+  //           return <User name={profile.name} age={profile.age} key={index} />
+  //         })
+  //       }
+  //       {/* 上記のようにmapで展開して値を渡すようにすれば配列の数だけ自動作成してくれる */}
+  //       {/* 
+  //         ReactではPropにkeyという値を指定することが出来て、Componentのリストを表示するような時にユニークなkeyをつけていないとdevelopment環境だとwarningがでてしまう
+  //         このkeyはVirtualDOMのdiffから実際のDOMに反映させるときに最小限の変更にするために使われる
+  //         mapで展開する際はindexをkeyに渡してあげるのがベストプラクティス 
+  //       */}
+  //     </div>
+  //   )
+  // }
+  // 
+  // // User component
+  // const User = (props) => { // 仮引数で受けて反映出来る
+  //   return <p>Hi, I am {props.name} ! and {props.age} years old !</p>
+  //   // 上記のように複数の属性(name, age) を仮引数で受けて => 仮引数名.属性 で値を参照して表示出来る
+  // }
+  // 
+  // User.defaultProps = {
+  //   name: "NoName",
+  //   age: 1,
+  // }
+  // // 上記のようにデフォルトでpropsを設定することが出来る
 
-const App = () => {
+/* props type */
+  import React from 'react';
+  import PropTypes from 'prop-types';
+  // propsで渡されるデータ型に制約を入れたい場合は上記のようにPropTypesをimportする
 
-  // return (
-  //   <div>
-  //     <User name={"Taro"} age={10} />
-  //     <User name={"Hanako"} age={5} />
-  //     {/* 上記のようにcomponentは再利用可能でかつ属性(name,age)の値に個別の値を渡して表示することも出来る */}
-  //   </div>
-  // )
-  // 上記は下記のようにユーザーの情報を配列で一括で管理して書き換えられる
+  const App = () => {
+    const profiles = [
+      { name: 'Taro', age: 10 },
+      { name: 'Hanako', age: 5 },
+      // { name: 5, age: 5 }, // nameに文字列以外の値が渡されているのでworningが出る
+      // { age: '5' }, // ageに数字以外の値が渡されているのでworningが出る
+      // { name: 'NoName' }, // isRequiredが設定されていて入力されていないのでworningが出る
+    ]
+    return (
+      <div>
+        {
+          profiles.map((profile, index) => {
+            return <User name={profile.name} age={profile.age} key={index} />
+          })
+        }
+      </div>
+    )
+  }
 
-  const profiles = [ // 配列で属性と値を管理
-    { name: 'Taro', age: 10 },
-    { name: 'Hanako', age: 5 },
-    { }, // 下記で定めたdefaultPropsが参照される
-  ]
+  const User = (props) => {
+    return <p>Hi, I am {props.name} ! and {props.age} years old !</p>
+  }
 
-  return (
-    <div>
-      {
-        profiles.map((profile, index) => {
-          return <User name={profile.name} age={profile.age} key={index} />
-        })
-      }
-      {/* 上記のようにmapで展開して値を渡すようにすれば配列の数だけ自動作成してくれる */}
-      {/* 
-        ReactではPropにkeyという値を指定することが出来て、Componentのリストを表示するような時にユニークなkeyをつけていないとdevelopment環境だとwarningがでてしまう
-        このkeyはVirtualDOMのdiffから実際のDOMに反映させるときに最小限の変更にするために使われる
-        mapで展開する際はindexをkeyに渡してあげるのがベストプラクティス 
-      */}
-    </div>
-  )
-}
+  User.propTypes = {
+    name: PropTypes.string,
+    age: PropTypes.number.isRequired,
+  }
+  // 上記のようにデータ型や入力必須など制約をつけられる
 
-// User component
-const User = (props) => { // 仮引数で受けて反映出来る
-  return <p>Hi, I am {props.name} ! and {props.age} years old !</p>
-  // 上記のように複数の属性(name, age) を仮引数で受けて => 仮引数名.属性 で値を参照して表示出来る
-}
-
-User.defaultProps = {
-  name: "NoName",
-  age: 1,
-}
-// 上記のようにデフォルトでpropsを設定することが出来る
 
 export default App;
