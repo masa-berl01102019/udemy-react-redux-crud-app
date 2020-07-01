@@ -123,38 +123,89 @@
   // // 上記のようにデフォルトでpropsを設定することが出来る
 
 /* props type */
-  import React from 'react';
-  import PropTypes from 'prop-types';
-  // propsで渡されるデータ型に制約を入れたい場合は上記のようにPropTypesをimportする
+  // import React from 'react';
+  // import PropTypes from 'prop-types';
+  // // propsで渡されるデータ型に制約を入れたい場合は上記のようにPropTypesをimportする
 
-  const App = () => {
-    const profiles = [
-      { name: 'Taro', age: 10 },
-      { name: 'Hanako', age: 5 },
-      // { name: 5, age: 5 }, // nameに文字列以外の値が渡されているのでworningが出る
-      // { age: '5' }, // ageに数字以外の値が渡されているのでworningが出る
-      // { name: 'NoName' }, // isRequiredが設定されていて入力されていないのでworningが出る
-    ]
+  // const App = () => {
+  //   const profiles = [
+  //     { name: 'Taro', age: 10 },
+  //     { name: 'Hanako', age: 5 },
+  //     // { name: 5, age: 5 }, // nameに文字列以外の値が渡されているのでworningが出る
+  //     // { age: '5' }, // ageに数字以外の値が渡されているのでworningが出る
+  //     // { name: 'NoName' }, // isRequiredが設定されていて入力されていないのでworningが出る
+  //   ]
+  //   return (
+  //     <div>
+  //       {
+  //         profiles.map((profile, index) => {
+  //           return <User name={profile.name} age={profile.age} key={index} />
+  //         })
+  //       }
+  //     </div>
+  //   )
+  // }
+
+  // const User = (props) => {
+  //   return <p>Hi, I am {props.name} ! and {props.age} years old !</p>
+  // }
+
+  // User.propTypes = {
+  //   name: PropTypes.string,
+  //   age: PropTypes.number.isRequired,
+  // }
+  // // 上記のようにデータ型や入力必須など制約をつけられる
+
+/* state */
+  import React, { Component } from 'react';
+
+  // functional component
+  const App = () => { 
     return (
-      <div>
-        {
-          profiles.map((profile, index) => {
-            return <User name={profile.name} age={profile.age} key={index} />
-          })
-        }
-      </div>
+      <React.Fragment>
+        <Counter/>
+        <Counter/>
+        <Counter/>
+      </React.Fragment>
     )
   }
+  // class component
+  class Counter extends Component { // importしたComponentをextendsしないといけない
+    constructor (props) {
+      super(props)
+      // constructorでpropsを受けてsuperで親クラスのComponentで初期化処理をする
+      this.state = {
+        count: 0
+      }
+      // stateはtihsでアクセスでき、object形式で値を保持する
+    }
+    // インスタンスが呼び出される際にconstructorが呼び出される
 
-  const User = (props) => {
-    return <p>Hi, I am {props.name} ! and {props.age} years old !</p>
-  }
+    countUp () {
+      this.setState({count: this.state.count + 1})
+      // stateを変更するのはthis.setState(object)で変更しなければならない
+    }
+    // 下記のようにアロー関数を使って関数式で書く事も出来る
+    countDown = () => {
+      this.setState({count: this.state.count - 1})
+    }
 
-  User.propTypes = {
-    name: PropTypes.string,
-    age: PropTypes.number.isRequired,
+    render () {
+      return (
+        <div>
+          <button onClick={this.countDown}>-</button>
+          {/* 関数式で書けば上記のようにすっきりかける */}
+          <span>{this.state.count}</span>
+          <button onClick={()=>{this.countUp()}}>+</button>
+        </div>
+      )
+    }
+    // render関数で描画する
+    // setState()が実行されるたびにrender関数がよびだされる
   }
-  // 上記のようにデータ型や入力必須など制約をつけられる
+  // stateはclass componentでしか使えない
+  // propsは親のコンポーネントから値が渡されて使用するがstateはコンポーネント内で値を持つ点が違う
+  // propsは変更不可 / stateは変更可能 という点が違う
 
 
 export default App;
