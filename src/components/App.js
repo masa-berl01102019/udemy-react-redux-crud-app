@@ -157,47 +157,96 @@
   // // 上記のようにデータ型や入力必須など制約をつけられる
 
 /* state */
+  // import React, { Component } from 'react';
+
+  // // functional component
+  // const App = () => { 
+  //   return (
+  //     <React.Fragment>
+  //       <Counter/>
+  //       <Counter/>
+  //       <Counter/>
+  //     </React.Fragment>
+  //   )
+  // }
+  // // class component
+  // class Counter extends Component { // importしたComponentをextendsしないといけない
+  //   constructor (props) {
+  //     super(props)
+  //     // constructorでpropsを受けてsuperで親クラスのComponentで初期化処理をする
+  //     this.state = {
+  //       count: 0
+  //     }
+  //     // stateはtihsでアクセスでき、object形式で値を保持する
+  //   }
+  //   // インスタンスが呼び出される際にconstructorが呼び出される
+
+  //   countUp () {
+  //     this.setState({count: this.state.count + 1})
+  //     // stateを変更するのはthis.setState(object)で変更しなければならない
+  //   }
+  //   // 下記のようにアロー関数を使って関数式で書く事も出来る
+  //   countDown = () => {
+  //     this.setState({count: this.state.count - 1})
+  //   }
+
+  //   render () {
+  //     return (
+  //       <div>
+  //         <button onClick={this.countDown}>-</button>
+  //         {/* 関数式で書けば上記のようにすっきりかける */}
+  //         <span>{this.state.count}</span>
+  //         <button onClick={()=>{this.countUp()}}>+</button>
+  //       </div>
+  //     )
+  //   }
+  //   // render関数で描画する
+  //   // setState()が実行されるたびにrender関数がよびだされる
+  // }
+  // // stateはclass componentでしか使えない
+  // // propsは親のコンポーネントから値が渡されて使用するがstateはコンポーネント内で値を持つ点が違う
+  // // propsは変更不可 / stateは変更可能 という点が違う
+
+
+  // export default App;
 
 /* Redux */
   import React, { Component } from 'react';
+  import { connect } from 'react-redux';
+  // connect関数をimport
+  import { increment, decrement } from '../actions';
+  // action creatorをimport
 
-  const App = () => { 
-    return (
-      <React.Fragment>
-        <Counter/>
-        <Counter/>
-        <Counter/>
-      </React.Fragment>
-    )
-  }
-
-  class Counter extends Component {
-    constructor (props) {
-      super(props)
-      this.state = {
-        count: 0
-      }
-    }
-
-    countUp () {
-      this.setState({count: this.state.count + 1})
-    }
-
-    countDown = () => {
-      this.setState({count: this.state.count - 1})
-    }
-
+  class App extends Component {
     render () {
+      const props = this.props
+      // this.propsにはstateや関数が下記のように含まれるようになるので変数に格納
+      // {value: 0, increment: ƒ, decrement: ƒ}
       return (
         <div>
-          <button onClick={this.countDown}>-</button>
-          {/* 関数式で書けば上記のようにすっきりかける */}
-          <span>{this.state.count}</span>
-          <button onClick={()=>{this.countUp()}}>+</button>
+          <button onClick={props.decrement} >-</button>
+          <span>{props.value}</span>
+          <button onClick={props.increment} >+</button>
         </div>
       )
     }
   }
 
+  const mapStateToProps = state => ({ value: state.count.value })
+  // 上記はconnect関数の引数として定義しなければいけない関数
+  // この関数は Store の state をどのように Props へ変換するか定義する関数
 
-export default App;
+  // const mapDispatchToProps = dispatch => ({
+  //   increment: () => dispatch(increment()),
+  //   decrement: () => dispatch(decrement()),
+  // })
+  // 上記は下記のように省略出来る
+  const mapDispatchToProps = ({ increment, decrement })
+   // 上記はconnect関数の引数として定義しなければいけない関数
+  //  action-creatorを引数で渡せばいい
+
+  export default connect(mapStateToProps,mapDispatchToProps)(App)
+  // exportする際にstateと状態の遷移を紐づけてあげればok
+
+
+
