@@ -157,9 +157,10 @@
   // // 上記のようにデータ型や入力必須など制約をつけられる
 
 /* state */
+
+/* Redux */
   import React, { Component } from 'react';
 
-  // functional component
   const App = () => { 
     return (
       <React.Fragment>
@@ -169,23 +170,19 @@
       </React.Fragment>
     )
   }
-  // class component
-  class Counter extends Component { // importしたComponentをextendsしないといけない
+
+  class Counter extends Component {
     constructor (props) {
       super(props)
-      // constructorでpropsを受けてsuperで親クラスのComponentで初期化処理をする
       this.state = {
         count: 0
       }
-      // stateはtihsでアクセスでき、object形式で値を保持する
     }
-    // インスタンスが呼び出される際にconstructorが呼び出される
 
     countUp () {
       this.setState({count: this.state.count + 1})
-      // stateを変更するのはthis.setState(object)で変更しなければならない
     }
-    // 下記のようにアロー関数を使って関数式で書く事も出来る
+
     countDown = () => {
       this.setState({count: this.state.count - 1})
     }
@@ -200,12 +197,7 @@
         </div>
       )
     }
-    // render関数で描画する
-    // setState()が実行されるたびにrender関数がよびだされる
   }
-  // stateはclass componentでしか使えない
-  // propsは親のコンポーネントから値が渡されて使用するがstateはコンポーネント内で値を持つ点が違う
-  // propsは変更不可 / stateは変更可能 という点が違う
 
 
 export default App;
