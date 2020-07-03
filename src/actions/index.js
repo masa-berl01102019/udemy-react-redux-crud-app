@@ -1,5 +1,5 @@
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
+export const INCREMENT = 'INCREMENT'
+export const DECREMENT = 'DECREMENT'
 // typeを識別する文字列はreducerでも使うの定数として保持して下記同様にexportする
 
 export const increment = () => {
