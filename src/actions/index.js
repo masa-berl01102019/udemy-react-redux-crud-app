@@ -8,6 +8,6 @@ export const increment = () => {
 }
 // 上記のようにactionを値として返す関数をaction creatorと呼ぶ
 // 下記のように省略して書くことも出来る
-export const increment = () => (
+export const decrement = () => (
   { type: 'DECREMENT'}
 )

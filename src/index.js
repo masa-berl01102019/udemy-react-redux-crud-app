@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {createStore} from 'redux';
 // storeを作成するcreateStore関数をreactパッケージからimport
 import {Provider} from 'react-redux';
-// 全てのコンポーネントにstoreを渡せるようにするProvaider関数をreactパッケージからimport
+// 全てのコンポーネントにstoreを渡せるようにするProvaiderコンポーネントをreactパッケージからimport
 import './index.css';
 import reducer from './reducers';
 // 作成したreducerをimport
