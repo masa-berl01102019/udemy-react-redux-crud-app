@@ -1,13 +1,21 @@
-export const INCREMENT = 'INCREMENT'
-export const DECREMENT = 'DECREMENT'
-// typeを識別する文字列はreducerでも使うの定数として保持して下記同様にexportする
+import axios from 'axios'
+// HTTPリクエストを送信するhttpクライアントをimport
 
-export const increment = () => {
-  return { type: 'INCREMENT'}
-  // actionとはobjectであり、type: 値 (unique)でなければならない
+
+export const READ_EVENTS = 'READ_EVENTS'
+
+const ROOT_URL = 'https://udemy-utils.herokuapp.com/api/v1'
+const QUERY_STRING = '?token=token123'
+
+export const readEvents = () => async dispatch => {
+  // axiosの戻り値はpromise型なのでasyncを使う
+  // asyncは関数につけるとPromiseオブジェクトを返す.
+  const response = await axios.get(`${ROOT_URL}/events${QUERY_STRING}`)
+  // get(URL?パラメータ)でgetを非同期で送信
+  // 返り値のresponseにはAPIサーバーから取得したデータが格納されている
+  // awaitはasyncがついている関数の中で使えて .then() を代用できる.
+  dispatch({type: READ_EVENTS, response})
 }
-// 上記のようにactionを値として返す関数をaction creatorと呼ぶ
-// 下記のように省略して書くことも出来る
-export const decrement = () => (
-  { type: 'DECREMENT'}
-)
+
+// 外部のAPIサーバーにHTTPリクエストをする
+// readイベントの中で非同期処理を実装したいが基本的にaction creatorはピュアなobjectを返えさなければいけないのでthunkで関数を返せるようにする

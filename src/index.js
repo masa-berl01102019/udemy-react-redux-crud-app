@@ -1,27 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux';
-// storeを作成するcreateStore関数をreactパッケージからimport
-import {Provider} from 'react-redux';
-// 全てのコンポーネントにstoreを渡せるようにするProvaiderコンポーネントをreactパッケージからimport
-import './index.css';
-import reducer from './reducers';
-// 作成したreducerをimport
 
-import App from './components/App';
+import {createStore, applyMiddleware} from 'redux';
+// middlewareを適用する為の関数をreduxからimportしておく
+import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
+// 上記はaction-creatorでobjectの代わりに関数を返せるように出来るパッケージ
+// redux-thunkはmiddleware
+
+import './index.css';
+
+import reducer from './reducers';
+import EventsIndex from './components/events_index';
+
 import registerServiceWorker from './registerServiceWorker';
 
-const store = createStore(reducer);
-// ここで作成されるstoreはapp内の全てのstateが集約された唯一のもの
+const store = createStore(reducer,applyMiddleware(thunk));
+// storeを作成時に第二引数でapplyMiddleware(thunk)でthunkを適用出来るようにする
 
 ReactDOM.render(
   <Provider store={store} >
-    <App/>
+    <EventsIndex/>
   </Provider>, 
   document.getElementById('root')
 );
 registerServiceWorker();
-// reducerをもとにstoreを作成
-// ここで作成されたstoreが全てのアプリケーション内でアクセス出来るように設定
-// Providerコンポーネントで囲ってstore属性にstoreを設定すれば全ての階層のcomponetで利用出来る
-// 従来のやり方で使用する場合の親要素->子要素->孫要素へとバケツリレ-形式で値を渡さなくても値にアクセス出来る
+
