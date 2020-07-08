@@ -46,7 +46,7 @@
     }
 
     render () {
-      const { handleSubmit, pristine, submitting} = this.props
+      const { handleSubmit, pristine, submitting, invalid} = this.props
       // 上記の仕様が意味が分からないので決まり文句として覚える
 
       return (
@@ -57,7 +57,7 @@
               {/* 上記のFieldタグでcomponentで指定した関数に属性の値を渡す */}
               <Field label='Body' name='body' type='text'component={this.renderField} />
             <div>
-              <input type='submit' value='submit' disabled={pristine || submitting} />
+              <input type='submit' value='submit' disabled={pristine || submitting || invalid} />
               {/* 上記のpristineは何も入力されていない状態ではtrueを返す */}
               {/* 上記のsubmittingは送信ボタンが押されるとtrueを返す */}
               {/* これで何も入力されていない状態や送信ボタンが連打される状況での送信を不可に出来る */}
