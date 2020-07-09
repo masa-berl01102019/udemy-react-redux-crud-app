@@ -7,6 +7,9 @@
   // 入力内容をpostする為にactionからpostEventの関数式をimportしておく
   import { Link } from 'react-router-dom';
 
+  import RaisedButton from 'material-ui/RaisedButton';
+  import TextField from 'material-ui/TextField';
+
   class EventsNew extends Component {
 
     constructor (props) {
@@ -28,12 +31,20 @@
       const {input, label, type, meta: { touched, error } } = field
 
       return (
-        <div>
-          <input {...input} placeholder={label} type={type} />
-          {/* 上記のように{...input}で属性値として代入することも可能 */}
-          {touched && error && <span>{error}</span>}
-          {/*  */}
-        </div>
+        // <div>
+        //   <input {...input} placeholder={label} type={type} />
+        //   {/* 上記のように{...input}で属性値として代入することも可能 */}
+        //   {touched && error && <span>{error}</span>}
+        //   {/*  */}
+        // </div>
+        <TextField
+          hintText={label}
+          floatingLabelText={label}
+          type={type}
+          errorText={touched && error}
+          {...input}
+          fullWidth={true}
+        />
       )
       // 上記のようにinputタグにの属性値に変数を代入してreturnでJSXを返せばいい
     }
@@ -48,23 +59,31 @@
     render () {
       const { handleSubmit, pristine, submitting, invalid} = this.props
       // 上記の仕様が意味が分からないので決まり文句として覚える
+      const style = { margin: 12 }
 
       return (
-        <React.Fragment>
-          <form onSubmit={handleSubmit(this.onSubmit)}>
-            {/* 上記の仕様が意味不明だから決まり文句として覚える */}
-              <Field label='Title' name='title' type='text'component={this.renderField} />
-              {/* 上記のFieldタグでcomponentで指定した関数に属性の値を渡す */}
-              <Field label='Body' name='body' type='text'component={this.renderField} />
-            <div>
-              <input type='submit' value='submit' disabled={pristine || submitting || invalid} />
-              {/* 上記のpristineは何も入力されていない状態ではtrueを返す */}
-              {/* 上記のsubmittingは送信ボタンが押されるとtrueを返す */}
-              {/* これで何も入力されていない状態や送信ボタンが連打される状況での送信を不可に出来る */}
-            </div>
-          </form>
-          <Link to="/" >CANCEL</Link>
-        </React.Fragment>
+        // <React.Fragment>
+        //   <form onSubmit={handleSubmit(this.onSubmit)}>
+        //     {/* 上記の仕様が意味不明だから決まり文句として覚える */}
+        //       <Field label='Title' name='title' type='text'component={this.renderField} />
+        //       {/* 上記のFieldタグでcomponentで指定した関数に属性の値を渡す */}
+        //       <Field label='Body' name='body' type='text'component={this.renderField} />
+        //     <div>
+        //       <input type='submit' value='submit' disabled={pristine || submitting || invalid} />
+        //       {/* 上記のpristineは何も入力されていない状態ではtrueを返す */}
+        //       {/* 上記のsubmittingは送信ボタンが押されるとtrueを返す */}
+        //       {/* これで何も入力されていない状態や送信ボタンが連打される状況での送信を不可に出来る */}
+        //     </div>
+        //   </form>
+        //   <Link to="/" >CANCEL</Link>
+        // </React.Fragment>
+
+        <form onSubmit={handleSubmit(this.onSubmit)}>
+          <Field label='Title' name='title' type='text'component={this.renderField} />
+          <Field label='Body' name='body' type='text'component={this.renderField} />
+          <RaisedButton label="Submit" type="submit" style={style} disabled={pristine || submitting || invalid} />
+          <RaisedButton label="Cancel" style={style} containerElement={ <Link to="/"/> } />
+        </form>
       )
     }
   }
